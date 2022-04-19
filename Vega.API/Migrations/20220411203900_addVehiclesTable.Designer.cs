@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vega.API.Data;
 
@@ -11,9 +12,10 @@ using Vega.API.Data;
 namespace Vega.API.Migrations
 {
     [DbContext(typeof(VegaDbContext))]
-    partial class VegaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220411203900_addVehiclesTable")]
+    partial class addVehiclesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace Vega.API.Migrations
 
                     b.HasIndex("VehiclesId");
 
-                    b.ToTable("FeatureVehicle", (string)null);
+                    b.ToTable("FeatureVehicle");
                 });
 
             modelBuilder.Entity("Vega.API.Models.Feature", b =>
@@ -51,7 +53,7 @@ namespace Vega.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Features", (string)null);
+                    b.ToTable("Features");
                 });
 
             modelBuilder.Entity("Vega.API.Models.Make", b =>
@@ -68,7 +70,7 @@ namespace Vega.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Makes", (string)null);
+                    b.ToTable("Makes");
                 });
 
             modelBuilder.Entity("Vega.API.Models.Model", b =>
@@ -90,7 +92,7 @@ namespace Vega.API.Migrations
 
                     b.HasIndex("MakeId");
 
-                    b.ToTable("Models", (string)null);
+                    b.ToTable("Models");
                 });
 
             modelBuilder.Entity("Vega.API.Models.Vehicle", b =>
@@ -127,7 +129,7 @@ namespace Vega.API.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.ToTable("Vehicles", (string)null);
+                    b.ToTable("Vehicles");
                 });
 
             modelBuilder.Entity("FeatureVehicle", b =>

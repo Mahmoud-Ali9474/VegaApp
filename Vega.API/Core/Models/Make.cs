@@ -1,4 +1,4 @@
-namespace Vega.API.Models
+namespace Vega.API.Core.Models
 {
     public class Make
     {

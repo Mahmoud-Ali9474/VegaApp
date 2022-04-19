@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Vega.API.Models
+namespace Vega.API.Core.Models
 {
     [Table("Models")]
     public class Model
