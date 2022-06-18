@@ -1,0 +1,79 @@
+<h2>Vehicles</h2>
+<p>
+  <button class="btn btn-primary" [routerLink]="['/vehicles/new']">
+    Add Vehilce
+  </button>
+</p>
+<div class="card bg-light mb-3">
+  <div class="card-body">
+    <div class="mb-3">
+      <label for="make">Make</label>
+      <select
+        id="make"
+        class="form-select"
+        [(ngModel)]="query.makeId"
+        (change)="onMakeChange()"
+      >
+        <option value="">Select Make</option>
+        <option *ngFor="let make of makes" value="{{ make.id }}">
+          {{ make.name }}
+        </option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="model">Model</label>
+      <select id="model" class="form-select" [(ngModel)]="query.modelId">
+        <option value="">Select Model</option>
+        <option *ngFor="let model of models" value="{{ model.id }}">
+          {{ model.name }}
+        </option>
+      </select>
+    </div>
+    <button class="btn btn-primary me-2" (click)="applyFilter()">Filter</button>
+    <button class="btn btn-secondary" (click)="resetFilter()">Reset</button>
+  </div>
+</div>
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <td *ngFor="let column of columns" (click)="applySorting(column)">
+        {{ column.title }}
+        <i
+          *ngIf="column.isSortable"
+          class="float-end fa-solid"
+          [ngClass]="{
+            'fa-arrow-up-wide-short':
+              query.isSortAscending && query.sortBy == column.key,
+            'fa-arrow-down-wide-short':
+              !query.isSortAscending && query.sortBy == column.key
+          }"
+        ></i>
+      </td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vehicle of vehicles">
+      <td>{{ vehicle.id }}</td>
+      <td>
+        {{ vehicle.model.name }}
+      </td>
+      <td>{{ vehicle.make.name }}</td>
+      <td>{{ vehicle.contact.name }}</td>
+
+      <td>
+        <a [routerLink]="['/vehicles', vehicle.id]" class="link-info"
+          ><i class="fa fa-edit"></i> View</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class="row">
+  <div class="col-12">
+    <app-pagination
+      [total-page]="totalItem"
+      [page-size]="3"
+      (paging-change)="onPageChange($event)"
+    ></app-pagination>
+  </div>
+</div>

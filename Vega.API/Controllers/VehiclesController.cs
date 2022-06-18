@@ -26,11 +26,12 @@ public class VehiclesController : ControllerBase
         _mapper = mapper;
         _logger = logger;
     }
-    // [HttpGet]
-    // public async Task<IEnumerable<Vehicle>> GetVehicles()
-    // {
-    //     return await _context.Vehicles.ToListAsync();
-    // }
+    [HttpGet]
+    public async Task<QueryResultResource<VehicleResource>> GetVehicles([FromQuery] VehicleQueryResource query)
+    {
+        var queryObj = _mapper.Map<VehicleQueryResource, VehicleQuery>(query);
+        return _mapper.Map<QueryResult<Vehicle>, QueryResultResource<VehicleResource>>(await repository.GetVehiclesAsync(queryObj));
+    }
     [HttpGet("{id}")]
     public async Task<IActionResult> GetVehicle(int id)
     {
@@ -44,7 +45,7 @@ public class VehiclesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateVehicle(SaveVehicleResource vehicleResource)
+    public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
     {
         var vehicle = _mapper.Map<SaveVehicleResource, Vehicle>(vehicleResource);
         vehicle.LastUpdate = DateTime.Now;

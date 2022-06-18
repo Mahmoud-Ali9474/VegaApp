@@ -10,6 +10,8 @@ namespace Vega.API.Core.Models
         public bool IsRegistered { get; set; }
         public DateTime LastUpdate { get; set; }
         public IList<Feature> Features { get; set; }
+        public IList<Photo> Photos { get; set; }
+
         [Required]
         [StringLength(255)]
         public string ContactName { get; set; }
@@ -20,6 +22,7 @@ namespace Vega.API.Core.Models
         public Vehicle()
         {
             Features = new List<Feature>();
+            Photos = new List<Photo>();
         }
     }
 }

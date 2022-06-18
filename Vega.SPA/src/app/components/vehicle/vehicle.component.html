@@ -1,0 +1,110 @@
+<!-- Nav tabs -->
+<h1>Vehicle</h1>
+
+<ul class="nav nav-tabs" id="vehicle-view" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="vehicle-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#vehicle"
+      type="button"
+      role="tab"
+      aria-controls="vehicle"
+      [class.active]="currentTab === 'vehicle'"
+      (click)="currentTab = 'vehicle'"
+    >
+      Vehicle
+    </button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button
+      class="nav-link"
+      id="photos-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#photos"
+      type="button"
+      role="tab"
+      aria-controls="photos"
+      aria-selected="false"
+      [class.active]="currentTab === 'photos'"
+      (click)="currentTab = 'photos'"
+    >
+      Photos
+    </button>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div
+    class="tab-pane"
+    [class.active]="currentTab === 'vehicle'"
+    id="vehicle"
+    role="tabpanel"
+    aria-labelledby="vehicle-tab"
+  >
+    <h2>Basics</h2>
+    <ul>
+      <li>Make: {{ vehicle.make.name }}</li>
+      <li>Model: {{ vehicle.model.name }}</li>
+      <li>Registered: {{ vehicle.isRegistered ? "Yes" : "No" }}</li>
+    </ul>
+
+    <h2>Features</h2>
+    <ul>
+      <li *ngFor="let f of vehicle.features">{{ f.name }}</li>
+    </ul>
+    <h2>Contact</h2>
+    <ul>
+      <li>Contact Name: {{ vehicle.contact.name }}</li>
+      <li>Contact Phone: {{ vehicle.contact.phone }}</li>
+      <li>Contact Email: {{ vehicle.contact.email }}</li>
+    </ul>
+    <br />
+    <p>
+      <a class="btn btn-primary" [routerLink]="['/vehicles/edit/', vehicle.id]"
+        >Edit</a
+      >
+      <!-- <button class="btn btn-danger" (click)="delete()">Delete</button> -->
+      <a class="btn btn-default" [routerLink]="['/vehicles']"
+        >View All Vehicles</a
+      >
+    </p>
+  </div>
+  <div
+    class="tab-pane"
+    [class.active]="currentTab === 'photos'"
+    id="photos"
+    role="tabpanel"
+    aria-labelledby="photos-tab"
+  >
+    <h2>Photos</h2>
+    <div class="mb-3">
+      <label for="formFile" class="form-label">Vehicle Image</label>
+      <input
+        class="form-control"
+        type="file"
+        id="formFile"
+        #fileInput
+        (change)="uploadPhoto()"
+      />
+    </div>
+    <div class="progress">
+      <div
+        class="progress-bar progress-bar-striped bg-info"
+        role="progressbar"
+        style="width: 50%"
+        aria-valuenow="50"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+    <img
+      *ngFor="let photo of photos"
+      src="{{ baseUrl + photo.fileName }}"
+      class="img-thumbnail"
+      alt="{{ photo.fileName }}"
+    />
+  </div>
+</div>

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Vega.API.Core;
 using Vega.API.Core.Models;
+using System.Linq.Expressions;
+using Vega.API.Extensions;
 
 namespace Vega.API.Data
 {
@@ -11,6 +13,31 @@ namespace Vega.API.Data
         {
             this.context = context;
 
+        }
+        public async Task<QueryResult<Vehicle>> GetVehiclesAsync(VehicleQuery queryObj)
+        {
+            var result = new QueryResult<Vehicle>();
+            var query = context.Vehicles
+            .Include(v => v.Model)
+                .ThenInclude(m => m.Make).AsQueryable();
+
+            if (queryObj.MakeId.HasValue)
+                query = query.Where(v => v.Model.Make.Id == queryObj.MakeId);
+            if (queryObj.ModelId.HasValue)
+                query = query.Where(v => v.Model.Id == queryObj.ModelId);
+
+            result.TotalCount = await query.CountAsync();
+            var dictionary = new Dictionary<string, Expression<Func<Vehicle, object>>>()
+            {
+                ["make"] = v => v.Model.Make.Name,
+                ["model"] = v => v.Model.Name,
+                ["contactName"] = v => v.ContactName,
+            };
+            query = query.ApplyOrdering(queryObj, dictionary);
+            query = query.ApplyPaging(queryObj);
+
+            result.PagedList = await query.ToListAsync();
+            return result;
         }
         public async Task<Vehicle> GetVehicle(int id, bool includeRelated = true)
         {
